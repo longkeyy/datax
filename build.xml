@@ -299,8 +299,8 @@
         </copy>
         <copy todir="${dist.dir}/engine">
             <fileset dir="build">
-                <include name="common"></include>
-                <include name="plugins"></include>
+                <include name="common/*"></include>
+                <include name="plugins/*"></include>
             </fileset>
         </copy>
         <copy todir="${dist.dir}/engine/conf">
