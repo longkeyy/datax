@@ -28,7 +28,6 @@
     <path id="compile.classpath">
         <pathelement location="${classes.dir}"/>
         <fileset dir="${lib.dir}" includes="**/*.jar"/>
-        <fileset dir="libs" includes="**/*.jar"/>
         <pathelement path="${conf.dir}"/>
     </path>
 
@@ -81,7 +80,7 @@
 
 
     <path id="project.classpath">
-        <fileset dir="lib">
+        <fileset dir="${lib.dir}">
             <include name="*.jar" />
         </fileset>
         <fileset dir="common">
@@ -91,15 +90,14 @@
 
     <target name="enginedist" depends="clean,compile">
 
-
         <copy todir="build/lib">
-            <fileset dir="lib">
+            <fileset dir="${lib.dir}">
                 <include name="**/*.jar" />
             </fileset>
 
         </copy>
         <path id="lib-classpath">
-            <fileset dir="lib" includes="**/*.jar" />
+            <fileset dir="${lib.dir}" includes="**/*.jar" />
         </path>
 
         <pathconvert property="project.classpath" pathsep=" ">
@@ -276,7 +274,13 @@
         <os family="unix"/>
     </condition>
 
-    <target name="init-lib" depends="mvn_windows, mvn_unix"/>
+    <target name="init-lib" depends="mvn_windows, mvn_unix">
+        <copy todir="${lib.dir}">
+            <fileset dir="libs">
+                <include name="**/*jar"></include>
+            </fileset>
+        </copy>
+    </target>
 
     <target name="mvn_windows" if="isWindows">
         <exec dir="." executable="cmd">
