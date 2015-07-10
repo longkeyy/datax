@@ -294,7 +294,7 @@
         <mkdir dir="${dist.dir}"/>
         <copy todir="${dist.dir}">
             <fileset dir="build">
-                <include name="engine"></include>
+                <include name="engine/*"></include>
             </fileset>
         </copy>
         <copy todir="${dist.dir}/engine">
