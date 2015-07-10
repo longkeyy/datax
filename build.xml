@@ -28,6 +28,7 @@
     <path id="compile.classpath">
         <pathelement location="${classes.dir}"/>
         <fileset dir="${lib.dir}" includes="**/*.jar"/>
+        <fileset dir="libs" includes="**/*.jar"/>
         <pathelement path="${conf.dir}"/>
     </path>
 
@@ -301,6 +302,12 @@
                 <include name="common"></include>
                 <include name="plugins"></include>
             </fileset>
+        </copy>
+        <copy todir="${dist.dir}/engine/conf">
+            <fileset dir="conf"/>
+        </copy>
+        <copy todir="${dist.dir}/engine/jobs">
+            <fileset dir="jobs"/>
         </copy>
     </target>
 </project>
