@@ -138,4 +138,14 @@
 		<class>com.taobao.datax.plugins.writer.hdfswriter.PanguWrapper</class>
 		<maxthreadnum>10</maxthreadnum>
 	</plugin>
+
+    <plugin>
+        <version>1</version>
+        <name>fsewriter</name>
+        <type>writer</type>
+        <target>fse</target>
+        <jar>fsewriter-1.0.0.jar</jar>
+        <class>com.taobao.datax.plugins.writer.fsewriter.FseWriter</class>
+        <maxthreadnum>10</maxthreadnum>
+    </plugin>
 </plugins>

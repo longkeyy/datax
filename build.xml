@@ -145,6 +145,7 @@
         <foreach target="eachplugindist" param="var">
             <path id="plugins">
                 <pathelement path="${classes.dir}/com/taobao/datax/plugins/writer/hdfswriter/1.0.0"/>
+                <pathelement path="${classes.dir}/com/taobao/datax/plugins/writer/fsewriter/1.0.0"/>
                 <pathelement path="${classes.dir}/com/taobao/datax/plugins/writer/oraclewriter/1.0.0"/>
                 <pathelement path="${classes.dir}/com/taobao/datax/plugins/writer/mysqlwriter/1.0.0"/>
                 <pathelement path="${classes.dir}/com/taobao/datax/plugins/reader/hdfsreader/1.0.0"/>
@@ -168,6 +169,15 @@
             </path>
         </foreach>
     </target>
+
+    <target name="fsewriter" depends="clean,compile">
+        <foreach target="eachplugindist" param="var">
+            <path id="plugins">
+                <pathelement path="${classes.dir}/com/taobao/datax/plugins/writer/fsewriter/1.0.0"/>
+            </path>
+        </foreach>
+    </target>
+
 
     <target name="streamwriter" depends="clean,compile">
         <foreach target="eachplugindist" param="var">
