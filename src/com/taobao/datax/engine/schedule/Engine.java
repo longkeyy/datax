@@ -105,10 +105,7 @@ public class Engine {
 		int sleepCnt = 0;
 		int retcode = 0;
 
-        for (NamedThreadPoolExecutor dp : writerPool) {
-            dp.getParam().setOppositeMetaData(
-                    readerPool.getParam().getMyMetaData());
-        }
+
 
 		while (true) {
 			/* check reader finish? */
@@ -117,7 +114,10 @@ public class Engine {
 				storagePool.closeInput();
 			}
 
-
+            for (NamedThreadPoolExecutor dp : writerPool) {
+                dp.getParam().setOppositeMetaData(
+                        readerPool.getParam().getMyMetaData());
+            }
 
 			boolean writerAllFinish = true;
 
