@@ -151,9 +151,9 @@ public class FseWriter extends Writer {
 
 
 
-        metaData = Engine.metaDate;
+        metaData = param.getOppositeMetaData();
         while (metaData == null) {
-            metaData = Engine.metaDate;
+            metaData = param.getOppositeMetaData();
             logger.info("wait for MetaData init ...");
             try {
                 Thread.sleep(1000);

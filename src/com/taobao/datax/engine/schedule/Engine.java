@@ -46,8 +46,6 @@ public class Engine {
 
 	private MonitorPool writerMonitorPool;
 
-    public static MetaData metaDate;
-
 	/**
 	 * Constructor for {@link Engine}
 	 * 
@@ -107,12 +105,19 @@ public class Engine {
 		int sleepCnt = 0;
 		int retcode = 0;
 
+        for (NamedThreadPoolExecutor dp : writerPool) {
+            dp.getParam().setOppositeMetaData(
+                    readerPool.getParam().getMyMetaData());
+        }
+
 		while (true) {
 			/* check reader finish? */
 			boolean readerFinish = readerPool.isTerminated();
 			if (readerFinish) {
 				storagePool.closeInput();
 			}
+
+
 
 			boolean writerAllFinish = true;
 

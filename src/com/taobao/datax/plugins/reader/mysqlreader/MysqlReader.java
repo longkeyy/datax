@@ -149,7 +149,6 @@ public class MysqlReader extends Reader {
 		try {
 			conn = DBSource.getConnection(this.getClass(), ip, port, dbname);
 			m = DBUtils.genMetaData(conn, sql);
-            Engine.metaDate = m;
             logger.info("MysqlReader metadata:" + m.getColInfo().size());
 			param.setMyMetaData(m);
 		} catch (SQLException e) {
