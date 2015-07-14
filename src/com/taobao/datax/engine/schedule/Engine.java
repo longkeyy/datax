@@ -92,10 +92,7 @@ public class Engine {
             Thread.sleep(1000);
             logger.info("waiting for MetaData init ...");
         }
-        List<JobPluginConf> writerConfs = jobConf.getWriterConfs();
-        for (int i = 0; i < writerConfs.size(); i++) {
-            writerConfs.get(i).getPluginParams().setOppositeMetaData(m);
-        }
+
         List<NamedThreadPoolExecutor> writerPool = initWriterPool(jobConf,
 				storagePool);
 
@@ -114,6 +111,11 @@ public class Engine {
 			if (readerFinish) {
 				storagePool.closeInput();
 			}
+
+            List<JobPluginConf> writerConfs = jobConf.getWriterConfs();
+            for (int i = 0; i < writerConfs.size(); i++) {
+                writerConfs.get(i).getPluginParams().setOppositeMetaData(m);
+            }
 
 			boolean writerAllFinish = true;
 

@@ -148,11 +148,20 @@ public class FseWriter extends Writer {
 				.toCharArray();
 		hadoop_conf = param.getValue(ParamKey.hadoop_conf, "");
 
+
+
         metaData = param.getOppositeMetaData();
-        if (metaData ==null) {
-            throw new DataExchangeException(String.format(
-                    "FseWriter Initialize metaData failed:%s",
-                    new NullPointerException()));
+        while (metaData == null) {
+            metaData = param.getOppositeMetaData();
+            logger.info("wait for MetaData init ...");
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+//            throw new DataExchangeException(String.format(
+//                    "FseWriter Initialize metaData failed:%s",
+//                    new NullPointerException()));
         }
 
 		String ugi = param.getValue(ParamKey.ugi, null);
