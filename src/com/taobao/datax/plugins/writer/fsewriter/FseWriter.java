@@ -59,6 +59,8 @@ public class FseWriter extends Writer {
 
 	private DfsWriterStrategy dfsWriterStrategy = null;
 
+    private MetaData metaData;
+
 	static {
 		Thread.currentThread().setContextClassLoader(FseWriter.class.getClassLoader());
 	}
@@ -85,8 +87,9 @@ public class FseWriter extends Writer {
 		delMode = param.getValue(ParamKey.delMode, this.delMode);
 		concurrency = param.getIntValue(ParamKey.concurrency, 1);
 		hadoop_conf = param.getValue(ParamKey.hadoop_conf, "");
+        metaData = param.getOppositeMetaData();
 
-		if (dir.endsWith("*")) {
+        if (dir.endsWith("*")) {
 			dir = dir.substring(0, dir.lastIndexOf("*"));
 		}
 		if (dir.endsWith("/")) {
@@ -113,7 +116,7 @@ public class FseWriter extends Writer {
 		} catch (Exception e) {
 			logger.error(ExceptionTracker.trace(e));
 			throw new DataExchangeException(String.format(
-					"HdfsWriter Init file system failed:%s,%s", e.getMessage(),
+					"FseWriter Init file system failed:%s,%s", e.getMessage(),
 					e.getCause()));
 		} finally {
 			closeAll();
@@ -156,7 +159,7 @@ public class FseWriter extends Writer {
 			logger.error(ExceptionTracker.trace(e));
 			closeAll();
 			throw new DataExchangeException(String.format(
-					"HdfsWriter Initialize file system failed:%s,%s",
+					"FseWriter Initialize file system failed:%s,%s",
 					e.getMessage(), e.getCause()));
 		}
 
@@ -165,7 +168,7 @@ public class FseWriter extends Writer {
 		} else {
 			closeAll();
 			throw new DataExchangeException("Can't find the param ["
-					+ ParamKey.dir + "] in hdfs-writer-param.");
+					+ ParamKey.dir + "] in fse-writer-param.");
 		}
 
 		String filetype = param.getValue(ParamKey.fileType, "TXT");
@@ -179,7 +182,7 @@ public class FseWriter extends Writer {
 		else {
 			closeAll();
 			throw new DataExchangeException(
-					"HdfsWriter cannot recognize filetype: " + filetype);
+					"FseWriter cannot recognize filetype: " + filetype);
 		}
 
 		return PluginStatus.SUCCESS.value();
@@ -190,7 +193,7 @@ public class FseWriter extends Writer {
 		if (p == null) {
 			closeAll();
 			throw new DataExchangeException(
-					"HdfsWriter Can't initialize file system .");
+					"FseWriter Can't initialize file system .");
 		}
 		try {
 			if ("2".equals(delMode))
@@ -205,7 +208,7 @@ public class FseWriter extends Writer {
 			closeAll();
 			logger.error(ExceptionTracker.trace(ex));
 			throw new DataExchangeException(String.format(
-					"HdfsWriter initialize file system failed: %s, %s",
+					"FseWriter initialize file system failed: %s, %s",
 					ex.getMessage(), ex.getCause()));
 		}
 	}
@@ -244,7 +247,7 @@ public class FseWriter extends Writer {
 			IOUtils.closeStream(fs);
 		} catch (Exception e) {
 			throw new DataExchangeException(String.format(
-					"HdfsWriter closing filesystem failed: %s,%s",
+					"FseWriter closing filesystem failed: %s,%s",
 					e.getMessage(), e.getCause()));
 		}
 	}
@@ -329,11 +332,13 @@ public class FseWriter extends Writer {
 														line.getField(i),
 														keyClassName) });
 
-						} else {
+						}
+//                      else {
+                            sb.append(metaData.getColInfo().get(i).getColName()).append("\2");
 							sb.append(
 									replaceChars(line.getField(i), searchChars))
 									.append(FIELD_SPLIT);
-						}
+//						}
 					}
 					sb.delete(sb.length() - 1, sb.length());
 					if (valueSetMethod != null)
