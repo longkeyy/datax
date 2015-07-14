@@ -488,7 +488,7 @@ public class FseWriter extends Writer {
 					int len = line.getFieldNum();
 					for (int i = 0; i < len; i++) {
 						// bw.write(line.getField(i));
-						bw.write(replaceChars(line.getField(i), searchChars));
+                        bw.write(metaData.getColInfo().get(i).getColName()+"\2"+replaceChars(line.getField(i), searchChars));
 						if (i < len - 1)
 							bw.write(FIELD_SPLIT);
 					}
