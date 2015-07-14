@@ -485,11 +485,23 @@ public class FseWriter extends Writer {
 		public void write(LineReceiver receiver) {
 			Line line;
 			try {
-				while ((line = receiver.getFromReader()) != null) {
+                List<MetaData.Column> colInfo = metaData.getColInfo();
+                String[] filednames;
+                if(colInfo != null){
+                    filednames = new String[colInfo.size()];
+                    for (int i = 0; i < colInfo.size(); i++) {
+                        filednames[i] = colInfo.get(i).getColName();
+                    }
+                }
+                while ((line = receiver.getFromReader()) != null) {
 					int len = line.getFieldNum();
 					for (int i = 0; i < len; i++) {
 						// bw.write(line.getField(i));
-                        bw.write(metaData.getColInfo().get(i).getColName()+"\2"+replaceChars(line.getField(i), searchChars));
+                        if(colInfo!=null){
+                            bw.write(metaData.getColInfo().get(i).getColName()+"\2"+replaceChars(line.getField(i), searchChars));
+                        } else {
+                            bw.write("field"+i+"\2"+replaceChars(line.getField(i), searchChars));
+                        }
 						if (i < len - 1)
 							bw.write(FIELD_SPLIT);
 					}
