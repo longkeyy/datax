@@ -149,6 +149,11 @@ public class FseWriter extends Writer {
 		hadoop_conf = param.getValue(ParamKey.hadoop_conf, "");
 
         metaData = param.getOppositeMetaData();
+        if (metaData ==null) {
+            throw new DataExchangeException(String.format(
+                    "FseWriter Initialize metaData failed:%s",
+                    new NullPointerException()));
+        }
 
 		String ugi = param.getValue(ParamKey.ugi, null);
 		String dir = param.getValue(ParamKey.dir);
