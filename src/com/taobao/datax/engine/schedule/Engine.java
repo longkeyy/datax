@@ -87,6 +87,11 @@ public class Engine {
 				storagePool);
 
         MetaData m = jobConf.getReaderConf().getPluginParams().getOppositeMetaData();
+        while (m==null) {
+            m = jobConf.getReaderConf().getPluginParams().getOppositeMetaData();
+            Thread.sleep(1000);
+            logger.info("waiting for MetaData init ...");
+        }
         List<JobPluginConf> writerConfs = jobConf.getWriterConfs();
         for (int i = 0; i < writerConfs.size(); i++) {
             writerConfs.get(i).getPluginParams().setOppositeMetaData(m);
