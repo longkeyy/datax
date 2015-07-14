@@ -13,6 +13,7 @@ package com.taobao.datax.plugins.reader.mysqlreader;
 import com.taobao.datax.common.exception.ExceptionTracker;
 import com.taobao.datax.common.exception.DataExchangeException;
 import com.taobao.datax.common.plugin.*;
+import com.taobao.datax.engine.schedule.Engine;
 import com.taobao.datax.plugins.common.DBResultSetSender;
 import com.taobao.datax.plugins.common.DBSource;
 import com.taobao.datax.plugins.common.DBUtils;
@@ -148,6 +149,7 @@ public class MysqlReader extends Reader {
 		try {
 			conn = DBSource.getConnection(this.getClass(), ip, port, dbname);
 			m = DBUtils.genMetaData(conn, sql);
+            Engine.metaDate = m;
             logger.info("MysqlReader metadata:" + m.getColInfo().size());
 			param.setMyMetaData(m);
 		} catch (SQLException e) {

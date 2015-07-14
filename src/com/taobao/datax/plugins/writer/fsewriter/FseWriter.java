@@ -499,19 +499,11 @@ public class FseWriter extends Writer {
 		public void write(LineReceiver receiver) {
 			Line line;
 			try {
-                List<MetaData.Column> colInfo = metaData.getColInfo();
-                String[] filednames;
-                if(colInfo != null){
-                    filednames = new String[colInfo.size()];
-                    for (int i = 0; i < colInfo.size(); i++) {
-                        filednames[i] = colInfo.get(i).getColName();
-                    }
-                }
                 while ((line = receiver.getFromReader()) != null) {
 					int len = line.getFieldNum();
 					for (int i = 0; i < len; i++) {
 						// bw.write(line.getField(i));
-                        if(colInfo!=null){
+                        if(metaData!=null){
                             bw.write(metaData.getColInfo().get(i).getColName()+"\2"+replaceChars(line.getField(i), searchChars));
                         } else {
                             bw.write("field"+i+"\2"+replaceChars(line.getField(i), searchChars));
@@ -545,7 +537,17 @@ public class FseWriter extends Writer {
 		return newchars;
 	}
 
-	// // TODO : 自动建立hive表和分区
+    @Override
+    public int post(PluginParam param) {
+        MetaData md = param.getOppositeMetaData();
+        if(md!=null){
+            logger.info(md.getColInfo().size());
+            return md.getColInfo().size();
+        }
+        return 0;
+    }
+
+    // // TODO : 自动建立hive表和分区
 	// @Override
 	// public int post(PluginParam param) {
 	// String createTableOrNot = param.getValue(

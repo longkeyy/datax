@@ -46,6 +46,8 @@ public class Engine {
 
 	private MonitorPool writerMonitorPool;
 
+    public static MetaData metaDate;
+
 	/**
 	 * Constructor for {@link Engine}
 	 * 
@@ -111,11 +113,6 @@ public class Engine {
 			if (readerFinish) {
 				storagePool.closeInput();
 			}
-
-            List<JobPluginConf> writerConfs = jobConf.getWriterConfs();
-            for (int i = 0; i < writerConfs.size(); i++) {
-                writerConfs.get(i).getPluginParams().setOppositeMetaData(m);
-            }
 
 			boolean writerAllFinish = true;
 
