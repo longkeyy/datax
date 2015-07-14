@@ -12,10 +12,7 @@ package com.taobao.datax.engine.schedule;
 import com.taobao.datax.common.constants.ExitStatus;
 import com.taobao.datax.common.exception.ExceptionTracker;
 import com.taobao.datax.common.exception.DataExchangeException;
-import com.taobao.datax.common.plugin.PluginParam;
-import com.taobao.datax.common.plugin.Pluginable;
-import com.taobao.datax.common.plugin.Reader;
-import com.taobao.datax.common.plugin.Writer;
+import com.taobao.datax.common.plugin.*;
 import com.taobao.datax.engine.conf.*;
 import com.taobao.datax.engine.plugin.BufferedLineExchanger;
 import com.taobao.datax.engine.storage.Storage;
@@ -88,7 +85,13 @@ public class Engine {
 		StoragePool storagePool = new StoragePool(jobConf, engineConf, PERIOD);
 		NamedThreadPoolExecutor readerPool = initReaderPool(jobConf,
 				storagePool);
-		List<NamedThreadPoolExecutor> writerPool = initWriterPool(jobConf,
+
+        MetaData m = jobConf.getReaderConf().getPluginParams().getOppositeMetaData();
+        List<JobPluginConf> writerConfs = jobConf.getWriterConfs();
+        for (int i = 0; i < writerConfs.size(); i++) {
+            writerConfs.get(i).getPluginParams().setOppositeMetaData(m);
+        }
+        List<NamedThreadPoolExecutor> writerPool = initWriterPool(jobConf,
 				storagePool);
 
 		logger.info("DataX starts to exchange data .");
