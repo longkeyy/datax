@@ -12,6 +12,7 @@ package com.taobao.datax.plugins.writer.fsewriter;
 import com.taobao.datax.common.exception.DataExchangeException;
 import com.taobao.datax.common.exception.ExceptionTracker;
 import com.taobao.datax.common.plugin.*;
+import com.taobao.datax.engine.schedule.Engine;
 import com.taobao.datax.plugins.common.DFSUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataOutputStream;
@@ -150,9 +151,9 @@ public class FseWriter extends Writer {
 
 
 
-        metaData = param.getOppositeMetaData();
+        metaData = Engine.metaDate;
         while (metaData == null) {
-            metaData = param.getOppositeMetaData();
+            metaData = Engine.metaDate;
             logger.info("wait for MetaData init ...");
             try {
                 Thread.sleep(1000);
