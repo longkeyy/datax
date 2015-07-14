@@ -87,7 +87,6 @@ public class FseWriter extends Writer {
 		delMode = param.getValue(ParamKey.delMode, this.delMode);
 		concurrency = param.getIntValue(ParamKey.concurrency, 1);
 		hadoop_conf = param.getValue(ParamKey.hadoop_conf, "");
-        metaData = param.getOppositeMetaData();
 
         if (dir.endsWith("*")) {
 			dir = dir.substring(0, dir.lastIndexOf("*"));
@@ -148,6 +147,8 @@ public class FseWriter extends Writer {
 		nullChars = param.getValue(ParamKey.nullChar, "")
 				.toCharArray();
 		hadoop_conf = param.getValue(ParamKey.hadoop_conf, "");
+
+        metaData = param.getOppositeMetaData();
 
 		String ugi = param.getValue(ParamKey.ugi, null);
 		String dir = param.getValue(ParamKey.dir);
