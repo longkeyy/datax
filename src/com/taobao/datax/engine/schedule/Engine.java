@@ -86,13 +86,6 @@ public class Engine {
 		NamedThreadPoolExecutor readerPool = initReaderPool(jobConf,
 				storagePool);
 
-        MetaData m = jobConf.getReaderConf().getPluginParams().getOppositeMetaData();
-        while (m==null) {
-            m = jobConf.getReaderConf().getPluginParams().getOppositeMetaData();
-            Thread.sleep(1000);
-            logger.info("waiting for MetaData init ...");
-        }
-
         List<NamedThreadPoolExecutor> writerPool = initWriterPool(jobConf,
 				storagePool);
 

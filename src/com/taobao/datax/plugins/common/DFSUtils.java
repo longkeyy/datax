@@ -21,6 +21,7 @@ import org.apache.hadoop.util.ReflectionUtils;
 import org.apache.log4j.Logger;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -122,7 +123,8 @@ public class DFSUtils {
             for (String config : configs) {
                 log.info(String.format(
                         "HdfsReader use %s for hadoop configuration .", config));
-                cfg.addResource(new Path(config));
+                cfg.addResource(new FileInputStream(config));
+//                cfg.addResource(new Path(config));
             }
 		
 			/* commented by bazhen.csy */

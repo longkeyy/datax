@@ -52,13 +52,13 @@ public class ParseXMLUtil {
 		JobConf job = new JobConf();
 		Document document;
 		try {
-			String xml = FileUtils
-					.readFileToString(new File(filename), "UTF-8");
-			document = DocumentHelper.parseText(xml);
-		} catch (DocumentException e) {
+            SAXReader reader = new SAXReader();
+            document = reader.read(new File(filename));
+            Element rootElement = document.getRootElement();
+        } catch (DocumentException e) {
 			LOG.error("DataX Can not find " + filename + " .");
 			throw new DataExchangeException(e.getCause());
-		} catch (IOException e) {
+		} catch (Exception e) {
 			LOG.error(String.format("DataX read config file %s failed .",
 					filename));
 			throw new DataExchangeException(e.getCause());
@@ -185,7 +185,7 @@ public class ParseXMLUtil {
 		Document document = null;
 		try {
 			document = saxReader.read(file);
-		} catch (DocumentException e) {
+		} catch (Exception e) {
 			LOG.error("DataX Can not find " + Constants.PLUGINSXML);
             throw new DataExchangeException(e.getCause());
 		}
@@ -225,7 +225,7 @@ public class ParseXMLUtil {
 
 		try {
 			document = saxReader.read(file);
-		} catch (DocumentException e) {
+		} catch (Exception e) {
 			LOG.error("DataX Can not find " + Constants.ENGINEXML
 					+ " , program exits .");
 			throw new DataExchangeException(e);
@@ -268,7 +268,7 @@ public class ParseXMLUtil {
 			document = saxReader.read(file);
 			url = document.selectSingleNode("/engine/schedule/url")
 					.getStringValue();
-		} catch (DocumentException e) {
+		} catch (Exception e) {
 			LOG.error("Can not find " + Constants.ENGINEXML
 					+ ", please check it again.");
             throw new DataExchangeException(e.getCause());

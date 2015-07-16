@@ -149,22 +149,6 @@ public class FseWriter extends Writer {
 				.toCharArray();
 		hadoop_conf = param.getValue(ParamKey.hadoop_conf, "");
 
-
-
-        metaData = param.getOppositeMetaData();
-        while (metaData == null) {
-            metaData = param.getOppositeMetaData();
-            logger.info("wait for MetaData init ...");
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-//            throw new DataExchangeException(String.format(
-//                    "FseWriter Initialize metaData failed:%s",
-//                    new NullPointerException()));
-        }
-
 		String ugi = param.getValue(ParamKey.ugi, null);
 		String dir = param.getValue(ParamKey.dir);
 
@@ -348,13 +332,10 @@ public class FseWriter extends Writer {
 														line.getField(i),
 														keyClassName) });
 
-						}
-//                      else {
-                            sb.append(metaData.getColInfo().get(i).getColName()).append("\2");
-							sb.append(
-									replaceChars(line.getField(i), searchChars))
+						} else {
+                            sb.append(replaceChars(line.getField(i), searchChars))
 									.append(FIELD_SPLIT);
-//						}
+						}
 					}
 					sb.delete(sb.length() - 1, sb.length());
 					if (valueSetMethod != null)
@@ -541,10 +522,6 @@ public class FseWriter extends Writer {
     @Override
     public int post(PluginParam param) {
         MetaData md = param.getOppositeMetaData();
-        if(md!=null){
-            logger.info(md.getColInfo().size());
-            return md.getColInfo().size();
-        }
         return 0;
     }
 
